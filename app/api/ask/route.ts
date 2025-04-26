@@ -5,6 +5,7 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
+  console.log("💡 OPENAI_API_KEY:", process.env.OPENAI_API_KEY?.slice(0,8), "…");
   const { prompt } = await req.json();
 
   const response = await openai.chat.completions.create({

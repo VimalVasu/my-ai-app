@@ -1,8 +1,7 @@
 export default function Home() {
     return (
-      <main className="p-8 text-center">
-        <h1 className="text-2xl font-bold">🚀 Welcome to My AI App</h1>
-        <p className="mt-4 text-gray-600">This is your Next.js + Supabase + OpenAI starter project.</p>
+      <main className="flex min-h-screen items-center justify-center bg-gray-100">
+        <h1 className="text-4xl font-bold text-blue-600">PercentLast bo000oted ✔︎</h1>
       </main>
     );
   }
