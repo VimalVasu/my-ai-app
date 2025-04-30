@@ -2,35 +2,52 @@
 import { NextResponse } from "next/server";
 import supabase from "@/lib/supabase";
 
+// Typed shape for each joined entry
+type Entry = { value: number; date: string };
+
+// Typed shape for each habit row including its entries
+type HabitWithEntries = {
+  id: number;
+  question: string;
+  entries: Entry[];
+};
+
 export async function GET(request: Request) {
-  // 1) Read window from ?window=N (default 7)
+  // 1) Read window size from ?window=N (default 7)
   const url = new URL(request.url);
   const windowSize = parseInt(url.searchParams.get("window") ?? "7", 10);
 
-  // 2) Compute date range
-  const today = new Date().toISOString().slice(0, 10);         // "YYYY-MM-DD"
+  // 2) Compute today and the start date
+  const today = new Date().toISOString().slice(0, 10);
   const start = new Date();
   start.setDate(start.getDate() - windowSize + 1);
   const startDate = start.toISOString().slice(0, 10);
 
-  // 3) Fetch habits WITH their entries
-  const { data: raw, error } = await supabase
+  // 3) Fetch habits + their entries
+  const { data: rawData, error } = await supabase
     .from("habits")
-    .select(`id, question, entries (value, date)`);
-  if (error) return NextResponse.json({ error }, { status: 500 });
+    .select("id, question, entries (value, date)");
 
-  // 4) Build the response
-  const habits = raw.map((h) => {
-    // only “yes” entries within the window
+  if (error || !rawData) {
+    return NextResponse.json(
+      { error: error?.message ?? "Unknown error" },
+      { status: 500 }
+    );
+  }
+
+  // 4) Cast and map into the UI shape
+  const typedData = rawData as HabitWithEntries[];
+  const habits = typedData.map((h) => {
+    // only “yes” entries within our window
     const recentYes = h.entries.filter(
-      (e: { value: number; date: string }) =>
-        e.value === 1 && e.date >= startDate
+      (entry: Entry) =>
+        entry.value === 1 && entry.date >= startDate
     );
 
     return {
       id: h.id,
       question: h.question,
-      today: recentYes.some((e: any) => e.date === today),
+      today: recentYes.some((entry: Entry) => entry.date === today),
       count: recentYes.length,
       window: windowSize,
     };
@@ -46,7 +63,13 @@ export async function POST(request: Request) {
     .insert({ question })
     .select("id, question")
     .single();
-  if (error) return NextResponse.json({ error }, { status: 500 });
+
+  if (error || !data) {
+    return NextResponse.json(
+      { error: error?.message ?? "Insert failed" },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({
     id: data.id,
@@ -59,7 +82,13 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   const { id } = await request.json();
-  const { error } = await supabase.from("habits").delete().eq("id", id);
-  if (error) return NextResponse.json({ error }, { status: 500 });
+  const { error } = await supabase
+    .from("habits")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
   return NextResponse.json({ success: true });
 }
