@@ -1,8 +1,9 @@
 // src/app/api/entries/route.ts
 import { NextResponse } from "next/server";
-import supabase from "@/lib/supabase";
+import { createClient } from "@/lib/supabase";
 
 export async function POST(request: Request) {
+  const supabase = createClient();
   const { habitId, value } = await request.json();
   const today = new Date().toISOString().slice(0, 10);
 

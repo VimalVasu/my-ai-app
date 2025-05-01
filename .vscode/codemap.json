@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "groups": [
+    {
+      "name": "App Structure",
+      "patterns": [
+        "src/app/**/*.tsx",
+        "src/app/**/*.ts",
+        "!src/app/api/**"
+      ]
+    },
+    {
+      "name": "API Routes",
+      "patterns": [
+        "src/app/api/**/*.ts"
+      ]
+    },
+    {
+      "name": "Components",
+      "patterns": [
+        "src/components/**/*.tsx",
+        "src/(components)/**/*.tsx"
+      ]
+    },
+    {
+      "name": "UI Components",
+      "patterns": [
+        "src/components/ui/**/*.tsx"
+      ]
+    },
+    {
+      "name": "Library & Utils",
+      "patterns": [
+        "src/lib/**/*.ts",
+        "src/lib/**/*.tsx"
+      ]
+    },
+    {
+      "name": "Configuration",
+      "patterns": [
+        "*.config.ts",
+        "*.config.js",
+        "*.config.mjs",
+        "tsconfig.json",
+        "package.json"
+      ]
+    }
+  ],
+  "excludePatterns": [
+    "node_modules/**",
+    ".next/**",
+    "dist/**",
+    "build/**"
+  ]
+} 

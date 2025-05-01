@@ -11,6 +11,12 @@ importers:
       '@radix-ui/react-switch':
         specifier: ^1.2.2
         version: 1.2.2(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@supabase/auth-helpers-react':
+        specifier: ^0.5.0
+        version: 0.5.0(@supabase/supabase-js@2.49.4)
+      '@supabase/ssr':
+        specifier: ^0.1.0
+        version: 0.1.0(@supabase/supabase-js@2.49.4)
       '@supabase/supabase-js':
         specifier: ^2.49.4
         version: 2.49.4
@@ -439,6 +445,12 @@ packages:
   '@rushstack/eslint-patch@1.11.0':
     resolution: {integrity: sha512-zxnHvoMQVqewTJr/W4pKjF0bMGiKJv1WX7bSrkl46Hg0QjESbzBROWK0Wg4RphzSOS5Jiy7eFimmM3UgMrMZbQ==}
 
+  '@supabase/auth-helpers-react@0.5.0':
+    resolution: {integrity: sha512-5QSaV2CGuhDhd7RlQCoviVEAYsP7XnrFMReOcBazDvVmqSIyjKcDwhLhWvnrxMOq5qjOaA44MHo7wXqDiF0puQ==}
+    deprecated: This package is now deprecated - please use the @supabase/ssr package instead.
+    peerDependencies:
+      '@supabase/supabase-js': ^2.39.8
+
   '@supabase/auth-js@2.69.1':
     resolution: {integrity: sha512-FILtt5WjCNzmReeRLq5wRs3iShwmnWgBvxHfqapC/VoljJl+W8hDAyFmf1NVw3zH+ZjZ05AKxiKxVeb0HNWRMQ==}
 
@@ -454,6 +466,11 @@ packages:
 
   '@supabase/realtime-js@2.11.2':
     resolution: {integrity: sha512-u/XeuL2Y0QEhXSoIPZZwR6wMXgB+RQbJzG9VErA3VghVt7uRfSVsjeqd7m5GhX3JR6dM/WRmLbVR8URpDWG4+w==}
+
+  '@supabase/ssr@0.1.0':
+    resolution: {integrity: sha512-bIVrkqjAK5G3KjkIMKYKtAOlCgRRplEWjrlyRyXSOYtgDieiOhk2ZyNAPsEOa1By9OZVxuX5eAW1fitdnuxayw==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.33.1
 
   '@supabase/storage-js@2.7.1':
     resolution: {integrity: sha512-asYHcyDR1fKqrMpytAS1zjyEfvxuOIp1CIXX7ji4lHHcJKqyk+sLl/Vxgm4sN6u8zvuUtae9e4kDxQP2qrwWBA==}
@@ -885,6 +902,10 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  cookie@0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
+    engines: {node: '>= 0.6'}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -1721,6 +1742,9 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
+  ramda@0.29.1:
+    resolution: {integrity: sha512-OfxIeWzd4xdUNxlWhgFazxsA/nl3mS4/jGZI5n00uWOoSSFRhC1b6gl6xvmzUamgmqELraWp0J/qqVlXYPDPyA==}
+
   react-dom@19.1.0:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
     peerDependencies:
@@ -2317,6 +2341,10 @@ snapshots:
 
   '@rushstack/eslint-patch@1.11.0': {}
 
+  '@supabase/auth-helpers-react@0.5.0(@supabase/supabase-js@2.49.4)':
+    dependencies:
+      '@supabase/supabase-js': 2.49.4
+
   '@supabase/auth-js@2.69.1':
     dependencies:
       '@supabase/node-fetch': 2.6.15
@@ -2342,6 +2370,12 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  '@supabase/ssr@0.1.0(@supabase/supabase-js@2.49.4)':
+    dependencies:
+      '@supabase/supabase-js': 2.49.4
+      cookie: 0.5.0
+      ramda: 0.29.1
 
   '@supabase/storage-js@2.7.1':
     dependencies:
@@ -2797,6 +2831,8 @@ snapshots:
       delayed-stream: 1.0.0
 
   concat-map@0.0.1: {}
+
+  cookie@0.5.0: {}
 
   cross-spawn@7.0.6:
     dependencies:
@@ -3759,6 +3795,8 @@ snapshots:
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
+
+  ramda@0.29.1: {}
 
   react-dom@19.1.0(react@19.1.0):
     dependencies:

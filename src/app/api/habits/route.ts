@@ -1,6 +1,6 @@
 // src/app/api/habits/route.ts
 import { NextResponse } from "next/server";
-import supabase from "@/lib/supabase";
+import { createClient } from "@/lib/supabase";
 
 // Typed shape for each joined entry
 type Entry = { value: number; date: string };
@@ -13,6 +13,8 @@ type HabitWithEntries = {
 };
 
 export async function GET(request: Request) {
+  const supabase = createClient();
+  
   // 1) Read window size from ?window=N (default 7)
   const url = new URL(request.url);
   const windowSize = parseInt(url.searchParams.get("window") ?? "7", 10);
@@ -38,7 +40,7 @@ export async function GET(request: Request) {
   // 4) Cast and map into the UI shape
   const typedData = rawData as HabitWithEntries[];
   const habits = typedData.map((h) => {
-    // only “yes” entries within our window
+    // only "yes" entries within our window
     const recentYes = h.entries.filter(
       (entry: Entry) =>
         entry.value === 1 && entry.date >= startDate
@@ -57,6 +59,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const supabase = createClient();
   const { question } = await request.json();
   const { data, error } = await supabase
     .from("habits")
@@ -81,6 +84,7 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const supabase = createClient();
   const { id } = await request.json();
   const { error } = await supabase
     .from("habits")
