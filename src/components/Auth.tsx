@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import type { User } from '@supabase/supabase-js'
 
 export default function Auth() {
   const [email, setEmail] = useState('')
@@ -12,7 +13,7 @@ export default function Auth() {
     signIn: false,
     signOut: false
   })
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
   const supabase = createClient()
 
@@ -20,20 +21,20 @@ export default function Auth() {
     // Check current session
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession()
-      setUser(session?.user || null)
+      setUser(session?.user ?? null)
     }
 
     checkUser()
 
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null)
+      setUser(session?.user ?? null)
     })
 
     return () => {
       subscription.unsubscribe()
     }
-  }, [])
+  }, [supabase.auth])
 
   const handleSignUp = async () => {
     setIsLoading(prev => ({ ...prev, signUp: true }))
