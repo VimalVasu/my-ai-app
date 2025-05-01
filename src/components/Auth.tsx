@@ -7,39 +7,59 @@ import { useState } from 'react'
 export default function Auth() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState({
+    signUp: false,
+    signIn: false,
+    signOut: false
+  })
   const router = useRouter()
   const supabase = createClient()
 
   const handleSignUp = async () => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-    if (error) {
-      alert(error.message)
-    } else {
-      router.refresh()
+    setIsLoading(prev => ({ ...prev, signUp: true }))
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      if (error) {
+        alert(error.message)
+      } else {
+        router.refresh()
+      }
+    } finally {
+      setIsLoading(prev => ({ ...prev, signUp: false }))
     }
   }
 
   const handleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    if (error) {
-      alert(error.message)
-    } else {
-      router.refresh()
+    setIsLoading(prev => ({ ...prev, signIn: true }))
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) {
+        alert(error.message)
+      } else {
+        router.refresh()
+      }
+    } finally {
+      setIsLoading(prev => ({ ...prev, signIn: false }))
     }
   }
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) {
-      alert(error.message)
-    } else {
-      router.refresh()
+    setIsLoading(prev => ({ ...prev, signOut: true }))
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        alert(error.message)
+      } else {
+        router.refresh()
+      }
+    } finally {
+      setIsLoading(prev => ({ ...prev, signOut: false }))
     }
   }
 
@@ -50,33 +70,42 @@ export default function Auth() {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="p-2 border rounded"
+        className="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="p-2 border rounded"
+        className="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
       <div className="flex gap-2">
         <button
           onClick={handleSignUp}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          disabled={isLoading.signUp}
+          className="px-4 py-2 bg-blue-500 text-white rounded transition-all duration-200 
+            hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
-          Sign Up
+          {isLoading.signUp ? 'Signing up...' : 'Sign Up'}
         </button>
         <button
           onClick={handleSignIn}
-          className="px-4 py-2 bg-green-500 text-white rounded"
+          disabled={isLoading.signIn}
+          className="px-4 py-2 bg-green-500 text-white rounded transition-all duration-200 
+            hover:bg-green-600 active:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed
+            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
-          Sign In
+          {isLoading.signIn ? 'Signing in...' : 'Sign In'}
         </button>
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 bg-red-500 text-white rounded"
+          disabled={isLoading.signOut}
+          className="px-4 py-2 bg-red-500 text-white rounded transition-all duration-200 
+            hover:bg-red-600 active:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed
+            focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
         >
-          Sign Out
+          {isLoading.signOut ? 'Signing out...' : 'Sign Out'}
         </button>
       </div>
     </div>
