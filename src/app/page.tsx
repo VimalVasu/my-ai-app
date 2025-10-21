@@ -79,8 +79,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-8 bg-gray-50">
-      <div className="mb-8">
+      <div className="mb-8 flex justify-between items-center">
         <Auth />
+        <a
+          href="/translator"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+        >
+          Korean Translator
+        </a>
       </div>
       <h1 className="text-3xl font-bold mb-6">Habit Glance</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
